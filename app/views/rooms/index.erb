@@ -1,15 +1,13 @@
-<% content_for :head do %>
-<%= stylesheet_link_tag asset_path('/assets/pages/test.css') %>
-<% end %>
+<ul>
+  <% @errors.each do |error_message| %>
+    <li><%= error_message %></li>
+  <% end %>
+</ul>
 
-<%= form_with model: @room, local: true do |f| %>
+<%= form_with model: @room_make_form, url: rooms_path, local: true do |f| %>
   <%= f.text_field :title, null: false, placeholder:"部屋名" %>
+  <%= f.label :is_private, 'プライベートルーム'  %>
+  <%= f.check_box :is_private, {}, '1', '0' %>
   <%= f.text_field :name, null: false, placeholder:"ユーザー名" %>
   <%= f.submit "部屋を作る" %>
 <% end %>
-
-<%= javascript_include_tag asset_path('/assets/test.js') %>
-
-<script>
-<%= render partial: 'test.js', locals: {msg: 'hello'} %>
-</script>
