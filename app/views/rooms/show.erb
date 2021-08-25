@@ -2,7 +2,8 @@
   <%= @room.title %>
 </h1>
 
-<%= form_with model: @message, url: room_messages_path(@room.id) do |f| %>
+<%= form_with model: @message, url: room_messages_path(@room.hashid) do |f| %>
+  <span id="current_user_name"><%= @user.name %></span>
   <%= f.text_field :content %>
   <%= f.submit '送信' %>
 <% end %>
