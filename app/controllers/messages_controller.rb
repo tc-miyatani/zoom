@@ -1,6 +1,6 @@
 class MessagesController < ApplicationController
   def create
-    room = Room.find(params[:room_id])
+    room = Room.find(params[:room_hashid])
     message = room.messages.new(message_params)
     if message.save
       ActionCable.server.broadcast 'message_channel',

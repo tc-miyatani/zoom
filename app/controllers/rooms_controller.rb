@@ -14,14 +14,14 @@ class RoomsController < ApplicationController
       redirect_to root_path and return
     end
     session['user_id'] = @room_make_form.user.id
-    redirect_to room_path(@room_make_form.room)
+    redirect_to room_path(@room_make_form.room.hashid)
   end
 
   def show
     if session['user_id'].blank?
       redirect_to root_path and return
     end
-    @room = Room.find(params[:id])
+    @room = Room.find_by(hashid: params[:hashid])
     @messages = @room.messages.includes(:user).order(created_at: 'DESC')
     @message = @messages.new
   end
