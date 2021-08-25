@@ -5,10 +5,31 @@ window.addEventListener('load', () => {
   const el_messages = document.getElementById('messages');
   if (!el_messages) { return; }
 
-  const el_message_template = document.getElementById('message_template');
-  const current_user_name = document.getElementById('current_user_name').textContent;
+  // room, current_userの情報取得
   const room_hashid = location.pathname.split('/').pop();
+  const current_user_name = document.getElementById('current_user_name').textContent;
 
+  // メッセージ送信
+  axios.defaults.headers.common = {
+    'X-Requested-With': 'XMLHttpRequest',
+    'X-CSRF-TOKEN' : document.getElementsByName('csrf-token')[0]?.content
+  };
+  const el_message_text_field = document.getElementById('message_text_field');
+  document.getElementById('message_send_btn').addEventListener('click', (e) => {
+    e.preventDefault();
+    console.log('click!');
+    const formData = new FormData(document.getElementById('message_form'));
+    axios.post(`/rooms/${room_hashid}/messages`, formData)
+          .then(res => {
+            el_message_text_field.value = '';// 送信成功したらメッセージ欄を空にする
+          })
+          .catch(error => {
+            alert('エラーが発生しました');
+          });
+  });
+
+  // リアルタイムメッセージ受信
+  const el_message_template = document.getElementById('message_template');
   console.log('message channel create');
   const channel = consumer.subscriptions.create({
     channel: 'MessageChannel',

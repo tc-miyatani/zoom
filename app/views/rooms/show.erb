@@ -1,11 +1,18 @@
+<% content_for :head do %>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<% end %>
+
 <h1>
   <%= @room.title %>
 </h1>
+<p>
+  <%= link_to '戻る', root_path %>
+</p>
 
-<%= form_with model: @message, url: room_messages_path(@room.hashid) do |f| %>
+<%= form_with model: @message, url: room_messages_path(@room.hashid), id: 'message_form' do |f| %>
   <span id="current_user_name"><%= @user.name %></span>
-  <%= f.text_field :content %>
-  <%= f.submit '送信' %>
+  <%= f.text_field :content, id: 'message_text_field' %>
+  <button id="message_send_btn">送信</button>
 <% end %>
 
 <div id="messages">

@@ -8,9 +8,9 @@ class MessagesController < ApplicationController
                               user: { only: [:id, :name] },
                             })
       ActionCable.server.broadcast "room_#{room_hashid}", data: data
-      render json: { is_success: true }
+      # render json: { is_success: true }
     else
-      render json: { is_success: false }
+      # render json: { is_success: false }
     end
   end
 

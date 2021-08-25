@@ -1,8 +1,13 @@
 class RoomsController < ApplicationController
   def index
+    unless session['user_id'].nil?
+      User.find(session['user_id']).update(is_enter: false)
+      session['user_id'] = nil
+    end
     @room_make_form = RoomMakeForm.new(flash[new_room_path]&.dig('room_make_params'))
     @room_enter_form = RoomEnterForm.new(flash[new_room_path]&.dig('room_enter_params'))
     @errors = flash[new_room_path]&.dig('errors') || []
+    Room.delete_not_used_rooms
     @rooms = Room.includes(:users).where(is_private: false).order(created_at: 'DESC')
   end
 
@@ -37,6 +42,9 @@ class RoomsController < ApplicationController
       redirect_to root_path and return
     end
     @room = Room.find_by(hashid: params[:hashid])
+    if @room.blank?
+      redirect_to root_path and return
+    end
     @messages = @room.messages.includes(:user).order(created_at: 'DESC')
     @message = @messages.new
     @user = User.find(session['user_id'])
