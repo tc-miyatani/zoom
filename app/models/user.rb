@@ -1,6 +1,6 @@
 class User < ApplicationRecord
-  belogs_to :room
-  has_many :messages, dependent: :destroy
+  belongs_to :room
+  has_many   :messages, dependent: :destroy
 
   validates :name,  presence: true,
                     uniqueness: {

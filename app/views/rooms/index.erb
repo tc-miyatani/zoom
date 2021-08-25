@@ -11,3 +11,9 @@
   <%= f.text_field :name, null: false, placeholder:"ユーザー名" %>
   <%= f.submit "部屋を作る" %>
 <% end %>
+
+<%= form_with model: @room_enter_form, url: enter_rooms_path, local: true do |f| %>
+  <%= select :room_enter_form, :room_hashid, @rooms.pluck(:title, :hashid), prompt: '選択してください' %>
+  <%= f.text_field :name, null: false, placeholder:"ユーザー名" %>
+  <%= f.submit "入室する" %>
+<% end %>
