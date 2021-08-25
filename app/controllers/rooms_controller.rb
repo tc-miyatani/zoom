@@ -39,6 +39,7 @@ class RoomsController < ApplicationController
     @room = Room.find_by(hashid: params[:hashid])
     @messages = @room.messages.includes(:user).order(created_at: 'DESC')
     @message = @messages.new
+    @user = User.find(session['user_id'])
   end
 
   private
