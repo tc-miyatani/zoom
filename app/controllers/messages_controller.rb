@@ -1,12 +1,16 @@
 class MessagesController < ApplicationController
   def create
-    room = Room.find(params[:room_hashid])
+    room_hashid = params[:room_hashid]
+    room = Room.find_by(hashid: room_hashid)
     message = room.messages.new(message_params)
     if message.save
-      ActionCable.server.broadcast 'message_channel',
-        data: message.to_json(include: {
-                                user: { only: [:id, :name] },
-                              })
+      data = message.to_json(include: {
+                              user: { only: [:id, :name] },
+                            })
+      ActionCable.server.broadcast "room_#{room_hashid}", data: data
+      render json: { is_success: true }
+    else
+      render json: { is_success: false }
     end
   end
 
