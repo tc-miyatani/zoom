@@ -1,15 +1,28 @@
 import consumer from "./consumer"
 
-consumer.subscriptions.create("MessageChannel", {
-  connected() {
-    // Called when the subscription is ready for use on the server
-  },
+window.addEventListener('load', () => {
+  console.log('message channel');
+  const el_messages = document.getElementById('messages');
+  if (!el_messages) { return; }
 
-  disconnected() {
-    // Called when the subscription has been terminated by the server
-  },
+  console.log('message channel create');
+  consumer.subscriptions.create('MessageChannel', {
+    connected() {
+      console.log('connected!!!');
+    },
 
-  received(data) {
-    // Called when there's incoming data on the websocket for this channel
-  }
+    disconnected() {
+      console.log('disconnected!!!');
+    },
+
+    received(res) {
+      const message = JSON.parse(res.data);
+      console.log(message);
+
+      const el_message = document.getElementById('message_template').content.cloneNode(true);
+      el_message.querySelector('.user-name').textContent = message.user.name;
+      el_message.querySelector('.message').textContent = message.content;
+      el_messages.insertAdjacentElement('afterbegin', el_message.children[0]);
+    }
+  });
 });

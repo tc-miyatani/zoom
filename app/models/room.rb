@@ -1,6 +1,7 @@
 require "securerandom"
 class Room < ApplicationRecord
-  has_many :users, dependent: :destroy
+  has_many :users,    dependent: :destroy
+  has_many :messages
 
   with_options presence: true do
     validates :title

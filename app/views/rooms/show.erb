@@ -1,0 +1,24 @@
+<h1>
+  <%= @room.title %>
+</h1>
+
+<%= form_with model: @message, url: room_messages_path(@room.id) do |f| %>
+  <%= f.text_field :content %>
+  <%= f.submit '送信' %>
+<% end %>
+
+<div id="messages">
+  <template id="message_template">
+    <p>
+      <b class="user-name"></b>
+      <span class="message"></span>
+    </p>
+  </template>
+
+  <% @messages.each do |message| %>
+    <p>
+      <b class="user-name"><%= message.user.name %></b>
+      <span class="message"><%= message.content %></span>
+    </p>
+  <% end %>
+</div>

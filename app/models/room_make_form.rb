@@ -1,6 +1,6 @@
 class RoomMakeForm
   include ActiveModel::Model
-  attr_accessor :title, :is_private, :name, :room
+  attr_accessor :title, :is_private, :name, :room, :user
 
   with_options presence: true do
     validates :title
@@ -19,7 +19,7 @@ class RoomMakeForm
         is_private: is_private,
         hashid: generate_hashid
       )
-      self.room.users.create!(name: name)
+      self.user = self.room.users.create!(name: name)
       is_success = true
     end
     is_success
